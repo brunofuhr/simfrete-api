@@ -2,7 +2,7 @@
 
 namespace SimFreteApi;
 use SimFreteApi\Http\SimFreteClient, SimFreteApi\Model\ConsultaFreteModel, SimFreteApi\Model\ProdutoModel, SimFreteApi\Model\ClasseProdutoModel,
-SimFreteApi\Model\ConsultaConhecimentoModel, SimFreteApi\Model\RetornoFreteModel;
+SimFreteApi\Model\ConsultaConhecimentoModel, SimFreteApi\Model\RetornoFreteModel, SimFreteApi\Model\RetornoConhecimentoModel;
 
 class SimFreteApi {
     
@@ -63,7 +63,10 @@ class SimFreteApi {
         
         $this->client->setEndpoint($conhecimento->getEndpoint());
         $this->client->setParameters($conhecimento->getParametersArray());
-        return $this->client->get();
+        $query = $this->client->get();
+        
+        $retorno = new RetornoConhecimentoModel($query);
+        return $retorno->getValues();
     }
     
     public function cadastrarClasseDeProduto($codProduto, $descricaoProduto, $classeProduto, $codLinha = NULL) {
